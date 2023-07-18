@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Registration</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-image: url("D:\DPS\2022-23\Assembly\download.jpg");
+            background-size: cover;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 28px;
+            margin: 0 28px;
+            border-radius: 10px;
+            box-shadow: inset -2px 2px 2px white;
+        }
+
+        .form-title {
+            font-size: 26px;
+            font-weight: 600;
+            text-align: center;
+            padding-bottom: 6px;
+            color: white;
+            text-shadow: 2px 2px 2px rgb(237, 228, 228);
+            border-bottom: solid 1px white;
+        }
+
+        .main-user-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 20px 0;
+        }
+
+        .user-input-box .user-input-box:nth-child(2n) {
+            justify-content: end;
+        }
+
+        .user-input-box {
+            display: flex;
+            flex-wrap: wrap;
+            width: 50%;
+            padding-bottom: 15px;
+        }
+
+        .user-input-box label {
+            width: 95%;
+            color: rgb(237, 225, 225);
+            font-size: 20px;
+            font-weight: 400;
+            margin: 5px;
+        }
+
+        .user-input-box input {
+            height: 40px;
+            width: 95%;
+            border-radius: 7px;
+            outline: none;
+            border: 1px solid #fefefe;
+            padding: 0 10px;
+        }
+
+        .gender-title {
+            color: rgb(252, 242, 242);
+            font-size: 24px;
+            font-weight: 600;
+            border-bottom: 1px solid rgb(255, 255, 255);
+        }
+
+        .gender-category {
+            margin: 15px 0;
+            color: yellowgreen;
+        }
+
+        .gender-category label {
+            padding: 0 20px 0 5px;
+        }
+
+        .gender-category label,
+        .gender-category input,
+        .form-submit-btn input {
+            cursor: pointer;
+        }
+
+        .form-submit-btn {
+            margin-top: 40px;
+        }
+
+        .form-submit-btn input {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            font-size: 20px;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            color: rgb(187, 39, 39);
+        }
+
+        .form-submit-btn input:hover {
+            background: rgba(56, 204, 93, 0.7);
+            color: azure;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                min-width: 280px;
+            }
+
+            .user-input-box {
+                margin-bottom: 12px;
+                width: 100%;
+            }
+
+            .user-input-box.user-input-box:nth-child(2n) {
+                justify-content: space-between;
+            }
+
+            .gender-category {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            .main-user-info {
+                max-height: 380px;
+                overflow: auto;
+            }
+
+            .main-user-info::-webkit-scrollbar {
+                width: 0;
+            }
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="index.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="form-title">Student Out Pass Record</h1>
+        <form id="studentForm">
+            <div class="main-user-info">
+                <div class="user-input-box">
+                    <label for="name">Student's Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter full Name" required/>
+                </div>
+                <div class="user-input-box">
+                    <label for="class">Class</label>
+                    <input type="text" id="class" name="class" placeholder="Enter Class" required/>
+                </div>
+                <div class="user-input-box">
+                    <label for="fatherName">Father's Name</label>
+                    <input type="text" id="fatherName" name="fatherName" placeholder="Enter Father's name" required/>
+                </div>
+                <div class="user-input-box">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="number" id="phoneNumber" name="phoneNumber" placeholder="Enter Phone Number" required/>
+                </div>
+                <div class="user-input-box">
+                    <label for="busNumber">Bus Number</label>
+                    <input type="text" id="busNumber" name="busNumber" placeholder="Enter Bus Number" required/>
+                </div>
+                <div class="user-input-box">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" placeholder="Enter Date" required/>
+                </div>
+                <div class="gender-details-box">
+                    <span class="gender-title">Gender</span>
+                    <div class="gender-category">
+                        <input type="radio" name="gender" id="male" value="male">
+                        <label for="male">Male</label>
+                        <input type="radio" name="gender" id="female" value="female">
+                        <label for="female">Female</label>
+                        <input type="radio" name="gender" id="other" value="other">
+                        <label for="other">Others</label>
+                    </div>
+                </div>
+                <div class="form-submit-btn">
+                    <input type="submit" value="Register">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Initialize Firebase
+        var firebaseConfig = {
+            // Your Firebase project configuration details here
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        var studentForm = document.getElementById('studentForm');
+
+        studentForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get the form data
+            var name = studentForm.elements['name'].value;
+            var class = studentForm.elements['class'].value;
+            var fatherName = studentForm.elements['fatherName'].value;
+            var phoneNumber = studentForm.elements['phoneNumber'].value;
+            var busNumber = studentForm.elements['busNumber'].value;
+            var date = studentForm.elements['date'].value;
+            var gender = studentForm.elements['gender'].value;
+
+            // Create a reference to the Firebase database
+            var database = firebase.database();
+            var studentsRef = database.ref('students');
+
+            // Create a new student record
+            var newStudentRef = studentsRef.push();
+            newStudentRef.set({
+                name: name,
+                class: class,
+                fatherName: fatherName,
+                phoneNumber: phoneNumber,
+                busNumber: busNumber,
+                date: date,
+                gender: gender
+            }).then(function() {
+                // Data saved successfully
+                console.log('Student record saved.');
+                // You can show a success message to the user or redirect them to another page
+            }).catch(function(error) {
+                // An error occurred while saving the data
+                console.error('Error saving student record:', error);
+                // You can show an error message to the user
+            });
+        });
+    </script>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDkD_TpIN0bDpI9HHBDkInXnQPr3hpoIwg",
+      authDomain: "dpis-9ffa2.firebaseapp.com",
+      projectId: "dpis-9ffa2",
+      storageBucket: "dpis-9ffa2.appspot.com",
+      messagingSenderId: "494386218129",
+      appId: "1:494386218129:web:7eb00129f93acd01876b30"
+    };
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
+</body>
+</html>
